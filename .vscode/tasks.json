@@ -15,18 +15,19 @@
         },
         {
             "label": "publish",
-            "type": "shell",
             "dependsOn": "build",
             "presentation": {
                 "reveal": "always",
                 "panel": "new"
             },
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "windows": {
-                "command": "${cwd}\\publish.ps1"
-            },
+            "command": "powershell",
+            "args": [
+                "-ExecutionPolicy",
+                "Unrestricted",
+                "-NoProfile",
+                "-File",
+                "${cwd}\\publish.ps1"
+            ],
             "problemMatcher": []
         },
         {
