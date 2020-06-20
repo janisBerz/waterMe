@@ -1,27 +1,50 @@
-﻿using System;
-using Iot.Device.CpuTemperature;
+﻿using Iot.Device.DHTxx;
+using Iot.Units;
+using System;
 using System.Threading;
 
 namespace IOT
 {
     class Program
     {
-        static CpuTemperature temperature = new CpuTemperature();
         static void Main(string[] args)
         {
-            DateTime dateTime = DateTime.UtcNow.Date;
-
-            while (true)
+            using (DHTSensor inside = new DHTSensor(16, DhtType.Dht22))
             {
-                if (temperature.IsAvailable)
-                {
-                    double tempr = temperature.Temperature.Celsius;
-                    tempr = Math.Round(tempr, 2);
-                    Console.WriteLine($"The CPU temperature in Celsius is {tempr} C {dateTime.ToString()}");
-                }
+                double relativeHumidity;
 
-                Thread.Sleep(2000); // sleep for 2000 milliseconds, 2 seconds
+                while (true)
+                {
+                    if (!inside.TryGetTemperatureAndHumidity(out Temperature temperature, out relativeHumidity) || inside.Temperature.Celsius > 60d || inside.Humidity > 100d)
+                    {
+                        Console.WriteLine(" failed obtaining inside readings");
+                        continue;
+                    }
+                    Console.WriteLine($"C: {temperature.Celsius.ToString()} H: {relativeHumidity}");
+                    Thread.Sleep(1000);
+                }
             }
+
+            // using (Dht22 inside = new Dht22(16))
+            // {
+            //     while (true)
+            //     {
+            //         System.Console.WriteLine("pin 16");
+            //         System.Console.WriteLine($"C: {inside.Temperature.Celsius} H: {inside.Humidity}");
+            //         Thread.Sleep(1000);
+            //     }
+
+            // }
+
+            // using (Dht22 inside4 = new Dht22(7))
+            // {
+            //     for (int i = 0; i < 10; i++)
+            //     {
+            //         System.Console.WriteLine("pin 4");
+            //         System.Console.WriteLine($"C: {inside4.Temperature.Celsius} H: {inside4.Humidity}");
+            //         Thread.Sleep(1000);
+            //     }
+            // }
         }
     }
 }
