@@ -34,12 +34,12 @@
 
         var arrayResults = [];
 
+
         for (let index = 0; index < obj.length; index++) {
-
-            arrayResults.push([index, obj[index].tempCelsius])
-
+            arrayResults.push([index, obj[index].tempCelsius, obj[index].humidity])
         };
-        
+
+
         console.log(arrayResults);
 
         // result.forEach(element => {
@@ -53,7 +53,8 @@
         function drawBackgroundColor() {
             var data = new google.visualization.DataTable();
             data.addColumn('number', 'X');
-            data.addColumn('number', 'Dogs');
+            data.addColumn('number', '°C');
+            data.addColumn('number', 'Humidity');
 
             data.addRows(arrayResults);
 
@@ -74,10 +75,10 @@
 
             var options = {
                 hAxis: {
-                    title: 'Time'
+                    title: 'Samples'
                 },
                 vAxis: {
-                    title: 'Popularity'
+                    title: 'Results'
                 },
                 backgroundColor: '#f1f8e9'
             };
