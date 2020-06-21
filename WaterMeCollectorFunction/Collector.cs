@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using WaterMeCollectorFunction;
 
-namespace WaterMe.CollectorFunction
+namespace WaterMeCollectorFunction
 {
     public static class Collector
     {
