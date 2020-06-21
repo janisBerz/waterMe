@@ -8,6 +8,8 @@ using Newtonsoft.Json;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Iot.Device.DHTxx;
+using Iot.Units;
 
 namespace WaterMe
 {
@@ -47,29 +49,37 @@ namespace WaterMe
 
             string hostName = System.Net.Dns.GetHostName();
 
-            while (rpiTemp.IsAvailable)
+            // GPIO Pin
+            using (Dht22 dht = new Dht22(4))
             {
-                if (rpiTemp.IsAvailable)
+                while (true)
                 {
-                    Console.WriteLine($"The CPU temperature in Celsius is {rpiTemp.Temperature.Celsius}" + "C");
-                    Metric metric = new Metric
-                    {
-                        HostName = hostName,
-                        TempCelsius = rpiTemp.Temperature.Celsius
-                    };
+                    //Temperature temperature = dht.Temperature;
+                    double humidity = dht.Humidity;
+                    double temp = dht.Temperature.Celsius;
 
-                    // Call the method to send data to the api as task. Task will run until completed.
+                    if (humidity > 0 && humidity < 100)
+                    {
+                        Metric metric = new Metric
+                        {
+                            HostName = hostName,
+                            TempCelsius = rpiTemp.Temperature.Celsius,
+                            Humidity = humidity
+                        };
+                        Console.WriteLine($"T: {metric.TempCelsius} H: {metric.Humidity}");
 
-                    try
-                    {
-                        await PostTemperature(metric, url);
+                        // Call the method to send data to the api as task. Task will run until completed.
+                        try
+                        {
+                            await PostTemperature(metric, url);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.StackTrace);
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        System.Console.WriteLine(ex.StackTrace);
-                    }
+                    Thread.Sleep(10000); // sleep for 10 seconds
                 }
-                Thread.Sleep(30000); // sleep for 2000 milliseconds, 30 seconds
             }
         }
     }
