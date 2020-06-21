@@ -41,6 +41,7 @@ namespace WaterMeCollectorFunction
                     {
                         HostName = input.HostName,
                         TempCelsius = input.TempCelsius,
+                        Humidity = input.Humidity,
                         DateTime = DateTime.Now
                     };
 

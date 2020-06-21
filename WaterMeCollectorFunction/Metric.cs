@@ -10,6 +10,9 @@ namespace WaterMeCollectorFunction
 
         [JsonPropertyName("TempCelsius")]
         public double TempCelsius { get; set; }
+
+        [JsonPropertyName("Humidity")]
+        public double Humidity { get; set; }
         public DateTime DateTime { get; set; }
     }
 }
