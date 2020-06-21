@@ -5,18 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Attach to .NET Functions",
-            "type": "coreclr",
-            "request": "attach",
-            "processId": "${command:azureFunctions.pickProcess}"
-        },
-        {
             "name": ".NET Core Launch (remote console)",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "buildApp",
             "program": "/home/pi/dotnet/dotnet",
-            "args": ["/home/pi/waterMe/test/WaterMe.dll"],
+            "args": [
+                "/home/pi/waterMe/test/WaterMe.dll"
+            ],
             "cwd": "/home/pi/waterMe/test",
             "stopAtEntry": false,
             "console": "internalConsole",
@@ -39,6 +35,12 @@
             "type": "coreclr",
             "request": "attach",
             "processId": "${command:pickProcess}"
+        },
+        {
+            "name": "Attach to .NET Functions",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:azureFunctions.pickProcess}"
         }
     ]
 }
