@@ -35,11 +35,11 @@ namespace WaterMe.CollectorFunction
                 Metric input = JsonConvert.DeserializeObject<Metric>(requestBody);
 
                 // Checks if the host name is present
-                if (input.Host != null)
+                if (input.HostName != null)
                 {
                     Metric output = new Metric
                     {
-                        Host = input.Host,
+                        HostName = input.HostName,
                         TempCelsius = input.TempCelsius,
                         DateTime = DateTime.Now
                     };

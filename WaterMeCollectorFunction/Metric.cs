@@ -5,8 +5,8 @@ namespace WaterMeCollectorFunction
 {
     public class Metric
     {
-        [JsonPropertyName("Host")]
-        public string Host { get; set; }
+        [JsonPropertyName("HostName")]
+        public string HostName { get; set; }
 
         [JsonPropertyName("TempCelsius")]
         public double TempCelsius { get; set; }

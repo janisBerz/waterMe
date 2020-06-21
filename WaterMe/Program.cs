@@ -14,18 +14,24 @@ namespace WaterMe
     class Program
     {
         // Async method to send data to the api
-        private static async Task PostTemperature(Temperature temp)
+        private static async Task PostTemperature(Metric metric, string url)
         {
-            string url = "http://192.168.88.108:7071/api/waterMeFunc";
+            // Serialize the message for sending it over http
+            var json = JsonConvert.SerializeObject(metric);
 
-            var jsonSerialoized = JsonConvert.SerializeObject(temp);
+            try
+            {
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var msg = await client.PostAsync(url, new StringContent(json, Encoding.UTF8));
+                Console.Write(msg);
+            }
+            catch (System.Exception ex)
+            {
 
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                Console.Write($"Failed to post message: {ex.Message}");
+            }
 
-            var msg = await client.PostAsync(url, new StringContent(jsonSerialoized, Encoding.UTF8));
-
-            Console.Write(msg);
         }
 
         // Client used to send data to the api. This object is capable of sending  and retreiving data from the web.
@@ -35,45 +41,35 @@ namespace WaterMe
         static CpuTemperature rpiTemp = new CpuTemperature();
         static async Task Main(string[] args)
         {
-              var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            // load the config like connection strings.
+            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            string url = configuration["ConnectionStringSetting"];
 
-            if (rpiTemp.IsAvailable)
-            {
-                Console.WriteLine($"The CPU temperature in Celsius is {rpiTemp.Temperature.Celsius}" + "C");
-                Temperature temperature = new Temperature();
-                temperature.Temp = rpiTemp.Temperature.Celsius;
-                // Call the method to send data to the api as task. Task will run until completed.
-
-                try
-                {
-                    await PostTemperature(temperature);
-                }
-                catch (Exception ex)
-                {
-                    System.Console.WriteLine(ex.StackTrace);
-                }
-            }
-            Thread.Sleep(2000); // sleep for 2000 milliseconds, 2 seconds
+            string hostName = System.Net.Dns.GetHostName();
 
             while (rpiTemp.IsAvailable)
             {
                 if (rpiTemp.IsAvailable)
                 {
                     Console.WriteLine($"The CPU temperature in Celsius is {rpiTemp.Temperature.Celsius}" + "C");
-                    Temperature temperature = new Temperature();
-                    temperature.Temp = rpiTemp.Temperature.Celsius;
+                    Metric metric = new Metric
+                    {
+                        HostName = hostName,
+                        TempCelsius = rpiTemp.Temperature.Celsius
+                    };
+
                     // Call the method to send data to the api as task. Task will run until completed.
 
                     try
                     {
-                        await PostTemperature(temperature);
+                        await PostTemperature(metric, url);
                     }
                     catch (Exception ex)
                     {
                         System.Console.WriteLine(ex.StackTrace);
                     }
                 }
-                Thread.Sleep(2000); // sleep for 2000 milliseconds, 2 seconds
+                Thread.Sleep(30000); // sleep for 2000 milliseconds, 30 seconds
             }
         }
     }
