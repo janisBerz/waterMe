@@ -5,13 +5,13 @@ namespace WaterMeCollectorFunction
 {
     public class Metric
     {
-        [JsonPropertyName("HostName")]
+        [JsonPropertyName("hostName")]
         public string HostName { get; set; }
 
-        [JsonPropertyName("TempCelsius")]
+        [JsonPropertyName("tempCelsius")]
         public double TempCelsius { get; set; }
 
-        [JsonPropertyName("Humidity")]
+        [JsonPropertyName("humidity")]
         public double Humidity { get; set; }
         public DateTime DateTime { get; set; }
     }

@@ -9,7 +9,7 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Iot.Device.DHTxx;
-using Iot.Units;
+using Newtonsoft.Json.Serialization;
 
 namespace WaterMe
 {
@@ -19,7 +19,11 @@ namespace WaterMe
         private static async Task PostTemperature(Metric metric, string url)
         {
             // Serialize the message for sending it over http
-            var json = JsonConvert.SerializeObject(metric);
+            var settings = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+            var json = JsonConvert.SerializeObject(metric, settings);
 
             try
             {
@@ -75,7 +79,8 @@ namespace WaterMe
                         {
                             Console.WriteLine(ex.StackTrace);
                         }
-                    } else
+                    }
+                    else
                     {
                         Console.WriteLine($"Unable to read sensor (t: {dht.Temperature.Celsius} h: {dht.Humidity}) ");
                     }

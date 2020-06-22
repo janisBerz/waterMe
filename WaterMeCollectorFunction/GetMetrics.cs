@@ -19,7 +19,7 @@ namespace WaterMeCollectorFunction
             [CosmosDB(
                 databaseName: "waterme",
                 collectionName: "metrics",
-                ConnectionStringSetting = "ConnectionStringSetting",
+                ConnectionStringSetting = "ConnectionString",
                 SqlQuery ="SELECT * FROM c WHERE c.HostName={hostName}")] IEnumerable<Metric> host,
             ILogger log,
             string hostName

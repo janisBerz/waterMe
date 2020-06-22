@@ -20,7 +20,7 @@ namespace WaterMeCollectorFunction
             [CosmosDB(
                 databaseName: "waterme",
                 collectionName: "metrics",
-                ConnectionStringSetting = "ConnectionStringSetting")] IAsyncCollector<object> metrics,
+                ConnectionStringSetting = "ConnectionString")] IAsyncCollector<Metric> metrics,
             ILogger log)
         {
             try
