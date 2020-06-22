@@ -21,8 +21,8 @@
                 "pipeProgram": "C:\\Program Files\\PuTTY\\plink.exe",
                 "pipeArgs": [
                     "-i",
-                    "C:\\sourceCode\\waterMe\\key\\waterMe.ppk",
-                    "pi@raspberrypi",
+                    "C:\\source\\waterMe\\key\\waterMe.ppk",
+                    "pi@192.168.43.89",
                     "-P",
                     "22",
                     "-v"

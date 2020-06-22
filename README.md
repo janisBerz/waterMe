@@ -23,7 +23,7 @@ Using Rasbian install:
     curl -sSL https://aka.ms/getvsdbgsh | /bin/sh /dev/stdin -v latest -l ~/vsdbg
     ```
 
-- To debug you will need to run the program as root, so we'll need to be able to remote launch the program as root as well. For this, we need to first set a password for the root user in your pi, which you can do by running:
+- ~~To debug you will need to run the program as root, so we'll need to be able to remote launch the program as root as well. For this, we need to first set a password for the root user in your pi, which you can do by running:~~
 
     ```bash
     sudo passwd root
@@ -41,11 +41,11 @@ reboot the pi: `sudo reboot`
 
 Development machine:
 
-
 #### For remote debugging
 
  Start here: https://github.com/OmniSharp/omnisharp-vscode/wiki/Attaching-to-remote-processes
 
+#### Cosmos DB query
 
 ```sql
 SELECT * FROM c WHERE c.HostName="raspberrypi" ORDER BY c._ts DESC

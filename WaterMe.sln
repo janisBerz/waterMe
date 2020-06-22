@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaterMe", "WaterMe\WaterMe.csproj", "{A80B726C-5834-48A8-9FB5-747F83E90DE7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaterMeFunction", "WaterMeCollectorFunction\WaterMeFunction.csproj", "{7412DD1F-16AA-41E5-83A1-2290299E0952}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaterMeFunction", "WaterMeFunction\WaterMeFunction.csproj", "{7412DD1F-16AA-41E5-83A1-2290299E0952}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
