@@ -30,10 +30,8 @@ namespace WaterMe
             }
             catch (System.Exception ex)
             {
-
                 Console.Write($"Failed to post message: {ex.Message}");
             }
-
         }
 
         // Client used to send data to the api. This object is capable of sending  and retreiving data from the web.
@@ -63,7 +61,7 @@ namespace WaterMe
                         Metric metric = new Metric
                         {
                             HostName = hostName,
-                            TempCelsius = rpiTemp.Temperature.Celsius,
+                            TempCelsius = temp,
                             Humidity = humidity
                         };
                         Console.WriteLine($"T: {metric.TempCelsius} H: {metric.Humidity}");
@@ -77,7 +75,11 @@ namespace WaterMe
                         {
                             Console.WriteLine(ex.StackTrace);
                         }
+                    } else
+                    {
+                        Console.WriteLine($"Unable to read sensor (t: {dht.Temperature.Celsius} h: {dht.Humidity}) ");
                     }
+                    Console.WriteLine("Sleeping for 10 seconds...");
                     Thread.Sleep(10000); // sleep for 10 seconds
                 }
             }
