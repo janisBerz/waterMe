@@ -45,3 +45,8 @@ Development machine:
 #### For remote debugging
 
  Start here: https://github.com/OmniSharp/omnisharp-vscode/wiki/Attaching-to-remote-processes
+
+
+```sql
+SELECT * FROM c WHERE c.HostName="raspberrypi" ORDER BY c._ts DESC
+```
