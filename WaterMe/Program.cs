@@ -9,6 +9,7 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Iot.Device.DHTxx;
+using System.Device.Gpio;
 using Newtonsoft.Json.Serialization;
 
 namespace WaterMe
@@ -43,49 +44,32 @@ namespace WaterMe
 
         // Used to access the cpu temperature on RPi
         static CpuTemperature rpiTemp = new CpuTemperature();
-        static async Task Main(string[] args)
+
+        static void Main(string[] args)
         {
-            // load the config like connection strings.
-            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            string url = configuration["ConnectionStringSetting"];
+            var pin = 5;
+            var lightTimeInMilliseconds = 1000;
+            var dimTimeInMilliseconds = 200;
 
-            string hostName = System.Net.Dns.GetHostName();
-
-            // GPIO Pin
-            using (Dht22 dht = new Dht22(4))
+            Console.WriteLine($"Let's blink an LED!");
+            using (GpioController controller = new GpioController())
             {
+                controller.OpenPin(pin, PinMode.Output);
+                Console.WriteLine($"GPIO pin enabled for use: {pin}");
+
+                Console.CancelKeyPress += (object sender, ConsoleCancelEventArgs eventArgs) =>
+                {
+                    controller.Dispose();
+                };
+
                 while (true)
                 {
-                    //Temperature temperature = dht.Temperature;
-                    double humidity = dht.Humidity;
-                    double temp = dht.Temperature.Celsius;
-
-                    if (humidity > 0 && humidity < 100)
-                    {
-                        Metric metric = new Metric
-                        {
-                            HostName = hostName,
-                            TempCelsius = temp,
-                            Humidity = humidity
-                        };
-                        Console.WriteLine($"T: {metric.TempCelsius} H: {metric.Humidity}");
-
-                        // Call the method to send data to the api as task. Task will run until completed.
-                        try
-                        {
-                            await PostTemperature(metric, url);
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex.StackTrace);
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Unable to read sensor (t: {dht.Temperature.Celsius} h: {dht.Humidity}) ");
-                    }
-                    Console.WriteLine("Sleeping for 10 seconds...");
-                    Thread.Sleep(10000); // sleep for 10 seconds
+                    Console.WriteLine($"Light for {lightTimeInMilliseconds}ms");
+                    controller.Write(pin, PinValue.High);
+                    Thread.Sleep(lightTimeInMilliseconds);
+                    Console.WriteLine($"Dim for {dimTimeInMilliseconds}ms");
+                    controller.Write(pin, PinValue.Low);
+                    Thread.Sleep(dimTimeInMilliseconds);
                 }
             }
         }

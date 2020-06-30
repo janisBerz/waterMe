@@ -7,3 +7,5 @@ if (Test-Path -Path .\*\bin\Debug\netcoreapp3.1\linux-arm\publish) {
     pscp -i $key -v -r .\* pi@raspberrypi:/home/pi/waterMe/test
     popd
 }
+
+exit

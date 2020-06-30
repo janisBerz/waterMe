@@ -3,7 +3,7 @@
     "tasks": [
         {
             "label": "publish",
-            "dependsOn": "build",
+            "dependsOn": "buildApp",
             "presentation": {
                 "reveal": "always",
                 "panel": "new"
@@ -117,7 +117,8 @@
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
+            "runOptions": {}
         },
     ]
 }

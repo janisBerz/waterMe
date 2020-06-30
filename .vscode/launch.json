@@ -22,7 +22,7 @@
                 "pipeArgs": [
                     "-i",
                     "C:\\source\\waterMe\\key\\waterMe.ppk",
-                    "pi@192.168.43.89",
+                    "pi@raspberrypi",
                     "-P",
                     "22",
                     "-v"

@@ -22,7 +22,7 @@
             return xmlHttp.responseText;
         }
 
-        var result = httpGet("http://192.168.88.108:7071/api/hostname/raspberrypi");
+        var result = httpGet("https://watermecollector.azurewebsites.net/api/HostName/raspberrypi?code=QF3AMlbofYUjZh8eK2lHi7K0HFDY66uGXcgA1fl8DxX6Gs0HXrXPNw==");
 
         var obj = JSON.parse(result);
 
