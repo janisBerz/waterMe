@@ -4,6 +4,7 @@
         {
             "label": "build",
             "command": "dotnet",
+            "dependsOn": "publish",
             "type": "process",
             "args": [
                 "build",
@@ -15,7 +16,6 @@
         },
         {
             "label": "publish",
-            "dependsOn": "build",
             "presentation": {
                 "reveal": "always",
                 "panel": "new"

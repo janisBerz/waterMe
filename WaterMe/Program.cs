@@ -1,6 +1,5 @@
-﻿using Iot.Device.DHTxx;
-using Iot.Units;
-using System;
+﻿using System;
+using System.Device.Gpio;
 using System.Threading;
 
 namespace IOT
@@ -9,42 +8,31 @@ namespace IOT
     {
         static void Main(string[] args)
         {
-            using (DHTSensor inside = new DHTSensor(16, DhtType.Dht22))
+            var pin = 5;
+            var lightTimeInMilliseconds = 1000;
+            var dimTimeInMilliseconds = 200;
+
+            Console.WriteLine($"Let's blink an LED!");
+            using (GpioController controller = new GpioController())
             {
-                double relativeHumidity;
+                controller.OpenPin(pin, PinMode.Output);
+                Console.WriteLine($"GPIO pin enabled for use: {pin}");
+
+                Console.CancelKeyPress += (object sender, ConsoleCancelEventArgs eventArgs) =>
+                {
+                    controller.Dispose();
+                };
 
                 while (true)
                 {
-                    if (!inside.TryGetTemperatureAndHumidity(out Temperature temperature, out relativeHumidity) || inside.Temperature.Celsius > 60d || inside.Humidity > 100d)
-                    {
-                        Console.WriteLine(" failed obtaining inside readings");
-                        continue;
-                    }
-                    Console.WriteLine($"C: {temperature.Celsius.ToString()} H: {relativeHumidity}");
-                    Thread.Sleep(1000);
+                    Console.WriteLine($"Light for {lightTimeInMilliseconds}ms");
+                    controller.Write(pin, PinValue.High);
+                    Thread.Sleep(lightTimeInMilliseconds);
+                    Console.WriteLine($"Dim for {dimTimeInMilliseconds}ms");
+                    controller.Write(pin, PinValue.Low);
+                    Thread.Sleep(dimTimeInMilliseconds);
                 }
             }
-
-            // using (Dht22 inside = new Dht22(16))
-            // {
-            //     while (true)
-            //     {
-            //         System.Console.WriteLine("pin 16");
-            //         System.Console.WriteLine($"C: {inside.Temperature.Celsius} H: {inside.Humidity}");
-            //         Thread.Sleep(1000);
-            //     }
-
-            // }
-
-            // using (Dht22 inside4 = new Dht22(7))
-            // {
-            //     for (int i = 0; i < 10; i++)
-            //     {
-            //         System.Console.WriteLine("pin 4");
-            //         System.Console.WriteLine($"C: {inside4.Temperature.Celsius} H: {inside4.Humidity}");
-            //         Thread.Sleep(1000);
-            //     }
-            // }
         }
     }
 }
